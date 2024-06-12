@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QFrame, QPushButton, QFileDialog
+from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QFrame, QPushButton, QFileDialog, QMessageBox
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout
 
 from excel import Excel
@@ -102,10 +102,20 @@ class ControlFrame(QFrame):
         controlLayout.addLayout(layout)
     
     def changeConnectionStrings(self):
-        if self.gui.sql is None:
-            self.gui.sql = SQL()
+        value = self.gui.excel.edit(self.gui.sql)
 
-        self.gui.excel.edit(self.gui.sql)
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Icon.Information)
+        msg_box.setText(f"{value['filesEdited']} files edited out of {value['totalFiles']} files")
+        msg_box.setWindowTitle("Success")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+        
+        # Show the message box and wait for user interaction
+        retval = msg_box.exec()
+        
+        # Exit the application when OK is clicked
+        if retval == QMessageBox.StandardButton.Ok:
+            self.gui.app.quit()
 
     
 # An input box for the user to enter the key values for the activity
