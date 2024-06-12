@@ -2,6 +2,8 @@ from sqlalchemy import create_engine, text
 import urllib
 
 class SQL:
+    fileNameHeader = "excel_report_name"
+    connectionHeader = "semantic_model_id"
 
     def __init__(self):
 
@@ -25,8 +27,17 @@ class SQL:
         # Use the engine to execute a query
         with engine.connect() as conn:
             self.result = conn.execute(text(f"SELECT TOP 10 * FROM {table}"))
+            self.columns = [column[0] for column in self.result.cursor.description]
+            self.fileNameColumn = self.columns.index(SQL.fileNameHeader)
+            self.connectionColumn = self.columns.index(SQL.connectionHeader)
+            self.rows = self.result.fetchall()
 
+    def getConnectionFromFileName(self, fileName):
+        for row in self.rows:
+            if row[self.fileNameColumn] == fileName:
+                return row[self.connectionColumn]
+            
     def print(self):
-        print(', '.join([column[0] for column in self.result.cursor.description]))
-        for row in self.result:
+        print(', '.join(self.columns))
+        for row in self.rows:
             print(row)

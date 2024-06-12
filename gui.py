@@ -1,9 +1,9 @@
 import sys
-from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QFrame, QPushButton, QFileDialog
-from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QStackedLayout
+from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout
 
 from excel import Excel
+from sql import SQL
 
 """
 Constructs the gui for the pipline healper.
@@ -16,6 +16,7 @@ class GUI:
         self.app = QApplication(sys.argv)
         self.title = "Connection String Updater"
         self.excel = Excel.test()
+        self.sql = None
 
         self.window = MainWindow(self)
 
@@ -65,8 +66,9 @@ class ControlFrame(QFrame):
         layout = QVBoxLayout()
 
         self.initControlButtons(layout)
-        layout.addLayout(InputBox(self.gui, "File Name", "directory"))
-        #layout.addLayout(InputBox(self.gui, "workspace ID", "workspaceID"))
+        layout.addLayout(InputBox(self.gui, "Directory", "directory", self.gui.excel["directory"]))
+        layout.addLayout(InputBox(self.gui, "Files", "fileCount", len(self.gui.excel.files)))
+        self.initRunButton(layout)
 
         self.setLayout(layout)
 
@@ -80,16 +82,35 @@ class ControlFrame(QFrame):
         layout.addWidget(directoryButton)
 
         controlLayout.addLayout(layout)
-
+    
     def selectDirectory(self):
         path = QFileDialog.getExistingDirectory(self, 'Select Folder', './data/')
         if path:
             self.gui.inputs['text']['directory'].setText(path)
-            self.excel = Excel(path)
+            self.gui.excel = Excel(path)
+            self.gui.inputs['text']['fileCount'].setText(str(len(self.gui.excel.files)))
+
+    # Adds the run program button
+    def initRunButton(self, controlLayout):
+        layout = QHBoxLayout()
+
+        directoryButton = QPushButton()
+        directoryButton.setText("Change Connection Strings")
+        directoryButton.clicked.connect(lambda : self.changeConnectionStrings())
+        layout.addWidget(directoryButton)
+
+        controlLayout.addLayout(layout)
+    
+    def changeConnectionStrings(self):
+        if self.gui.sql is None:
+            self.gui.sql = SQL()
+
+        self.gui.excel.edit(self.gui.sql)
+
     
 # An input box for the user to enter the key values for the activity
 class InputBox(QHBoxLayout):
-    def __init__(self, gui, label, key):
+    def __init__(self, gui, label, key, value):
         super().__init__()
         self.gui = gui
 
@@ -98,6 +119,7 @@ class InputBox(QHBoxLayout):
         self.addWidget(labelWidget)
 
         inputBox = QLineEdit()
-        inputBox.setText(self.gui.excel[key])
+        inputBox.setText(str(value))
+        inputBox.setReadOnly(True)
         self.gui.inputs['text'][key] = inputBox
         self.addWidget(inputBox)

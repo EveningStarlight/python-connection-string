@@ -1,5 +1,16 @@
-{'id': '1', '{http://schemas.microsoft.com/office/spreadsheetml/2017/revision16}uid': '{00000000-0015-0000-FFFF-FFFF00000000}', 'keepAlive': '1', 'name': 'pbiazure://api.powerbi.com 86577be9-9e83-4688-8a66-9c10fb4f130d Model', 'type': '5', 'refreshedVersion': '8', 'background': '1', 'refreshOnLoad': '1'}
+{'id': '1', '{http://schemas.microsoft.com/office/spreadsheetml/2017/revision16}uid': '{00000000-0015-0000-FFFF-FFFF00000000}', 'keepAlive': '1', 'name': 'pbiazure://api.powerbi.com a6a23ed0-990d-4d1a-979f-05578236d854 Model', 'type': '5', 'refreshedVersion': '6', 'background': '1', 'refreshOnLoad': '1'}
+{'connection': 'Provider=MSOLAP;Integrated Security=ClaimsToken;Identity Provider=https://login.microsoftonline.com/common, https://analysis.windows.net/powerbi/api, 929d0ec0-7a41-4b1e-bc7c-b754a28bddcc;Persist Security Info=True;Data Source=pbiazure://api.powerbi.com;Initial Catalog=a6a23ed0-990d-4d1a-979f-05578236d854;MDX Compatibility= 1; MDX Missing Member Mode= Error; Safety Options= 2; Update Isolation Level= 2;Locale Identifier=1033;', 'command': 'Model', 'commandType': '1'}
+{'id': '1', '{http://schemas.microsoft.com/office/spreadsheetml/2017/revision16}uid': '{00000000-0015-0000-FFFF-FFFF00000000}', 'keepAlive': '1', 'name': 'pbiazure://api.powerbi.com f406979f-c560-4a00-b341-b89e07787eca Model', 'type': '5', 'refreshedVersion': '6', 'background': '1', 'refreshOnLoad': '1'}
+{'connection': 'Provider=MSOLAP;Integrated Security=ClaimsToken;Identity Provider=https://login.microsoftonline.com/common, https://analysis.windows.net/powerbi/api, 929d0ec0-7a41-4b1e-bc7c-b754a28bddcc;Persist Security Info=True;Data Source=pbiazure://api.powerbi.com;Initial Catalog=f406979f-c560-4a00-b341-b89e07787eca;MDX Compatibility= 1; MDX Missing Member Mode= Error; Safety Options= 2; Update Isolation Level= 2;Locale Identifier=1033;', 'command': 'Model', 'commandType': '1'}
+{'id': '1', 'keepAlive': '1', 'name': 'pbiazure://api.powerbi.com d0be9520-3581-4511-a1e5-c549570ad197 Model', 'type': '5', 'refreshedVersion': '6', 'background': '1', 'refreshOnLoad': '1'}
+{'connection': 'Provider=MSOLAP;Integrated Security=ClaimsToken;Identity Provider=https://login.microsoftonline.com/common, https://analysis.windows.net/powerbi/api, 929d0ec0-7a41-4b1e-bc7c-b754a28bddcc;Persist Security Info=True;Data Source=pbiazure://api.powerbi.com;Initial Catalog=d0be9520-3581-4511-a1e5-c549570ad197;MDX Compatibility= 1; MDX Missing Member Mode= Error; Safety Options= 2; Update Isolation Level= 2;Locale Identifier=1033;', 'command': 'Model', 'commandType': '1'}
 
-<Element '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}connection' at 0x0000024193928BD0>
-{'connection': 'Provider=MSOLAP.8;Integrated Security=ClaimsToken;Persist Security Info=True;Initial Catalog=sobe_wowvirtualserver-86577be9-9e83-4688-8a66-9c10fb4f130d;Data Source=pbiazure://api.powerbi.com;MDX Compatibility=1;Safety Options=2;MDX Missing Member Mode=Error;Identity Provider=https://login.microsoftonline.com/common, https://analysis.windows.net/powerbi/api, 929d0ec0-7a41-4b1e-bc7c-b754a28bddcc;Update Isolation 
-Level=2', 'command': 'Model', 'commandType': '1'}
+
+Initial Catalog=d0be9520-3581-4511-a1e5-c549570ad197
+
+folder_path:            'https://054gc-my.sharepoint.com/:f:/r/personal/amine_kazitani_statcan_gc_ca/Documents/Documents/FRS%20Modernization/Excel-ConnStr-PBI/General?csf=1&web=1&e=2oC8V5', 
+excel_report_name:      'AAD Users and licenses.xlsx', 
+semantic_model_name:    'AAD Users and licenses', 
+workspace_id:           'fdc8659b-9fca-4d63-932c-a2fc6e19970b', 
+semantic_model_id:      'f406979f-c560-4a00-b341-b89e07787eca', 
+active:                 True
