@@ -15,7 +15,7 @@ class GUI:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.title = "Connection String Updater"
-        self.excel = Excel.test()
+        self.excel = Excel('./')
         self.sql = None
 
         self.window = MainWindow(self)
@@ -84,7 +84,7 @@ class ControlFrame(QFrame):
         controlLayout.addLayout(layout)
     
     def selectDirectory(self):
-        path = QFileDialog.getExistingDirectory(self, 'Select Folder', './data/')
+        path = QFileDialog.getExistingDirectory(self, 'Select Folder', self.gui.excel.directory)
         if path:
             self.gui.inputs['text']['directory'].setText(path)
             self.gui.excel = Excel(path)
@@ -102,11 +102,15 @@ class ControlFrame(QFrame):
         controlLayout.addLayout(layout)
     
     def changeConnectionStrings(self):
+        if self.gui.sql is None:
+            self.gui.sql = SQL()
         value = self.gui.excel.edit(self.gui.sql)
+
+        messageText = f"Total files found: {value['totalFiles']}\nTotal matches found in SQL table: {value['totalFiles']-value['filesNotFound']}\nTotal files modified: {value['filesEdited']}"
 
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Icon.Information)
-        msg_box.setText(f"{value['filesEdited']} files edited out of {value['totalFiles']} files")
+        msg_box.setText(messageText)
         msg_box.setWindowTitle("Success")
         msg_box.setStandardButtons(QMessageBox.StandardButton.Ok)
         
