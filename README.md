@@ -13,7 +13,7 @@ This allows for fast editing of multiple sheets
 pip install
 ```
 
-Configure the secrets.json file. 
+Configure the secrets.json file. Copy the `secretsTEMPLATE.json` and rename it `secrets.json`, and update the values inside. 
 The tenant ID, client ID, and client secret are required to connect to the sharepoint.
 
 ## Running the program
