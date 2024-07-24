@@ -4,18 +4,19 @@ from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout
 
 from excel import Excel
 from sql import SQL
+from sharepoint import Sharepoint
 
 """
-Constructs the gui for the pipline healper.
-
-The gui is made up of two main parts, the input window on top,
-and an Instruction pannel below
+Constructs the gui
 """
 class GUI:
     def __init__(self):
+        self.sharepoint = Sharepoint()
+        path = self.sharepoint.downloadFiles()
+
         self.app = QApplication(sys.argv)
         self.title = "Connection String Updater"
-        self.excel = Excel('./')
+        self.excel = Excel(path)
         self.sql = None
 
         self.window = MainWindow(self)
@@ -47,7 +48,7 @@ class MainWindow(QWidget):
 
     def initUI(self):
         self.setWindowTitle(self.gui.title)
-        self.setGeometry(100, 100, 280, 80)
+        self.setGeometry(800, 400, 400, 120)
 
 # The Control Frame
 class ControlFrame(QFrame):
@@ -76,19 +77,7 @@ class ControlFrame(QFrame):
     def initControlButtons(self, controlLayout):
         layout = QHBoxLayout()
 
-        directoryButton = QPushButton()
-        directoryButton.setText("Select Folder")
-        directoryButton.clicked.connect(lambda : self.selectDirectory())
-        layout.addWidget(directoryButton)
-
         controlLayout.addLayout(layout)
-    
-    def selectDirectory(self):
-        path = QFileDialog.getExistingDirectory(self, 'Select Folder', self.gui.excel.directory)
-        if path:
-            self.gui.inputs['text']['directory'].setText(path)
-            self.gui.excel = Excel(path)
-            self.gui.inputs['text']['fileCount'].setText(str(len(self.gui.excel.files)))
 
     # Adds the run program button
     def initRunButton(self, controlLayout):
@@ -106,7 +95,7 @@ class ControlFrame(QFrame):
             self.gui.sql = SQL()
         value = self.gui.excel.edit(self.gui.sql)
 
-        messageText = f"Total files found: {value['totalFiles']}\nTotal matches found in SQL table: {value['totalFiles']-value['filesNotFound']}\nTotal files modified: {value['filesEdited']}"
+        messageText = f"Total files found: {len(value['files'])}\nTotal matches found in SQL table: {len(value['files'])-value['filesNotFound']}\nTotal files modified: {len(value['editedFiles'])}"
 
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Icon.Information)
@@ -119,6 +108,11 @@ class ControlFrame(QFrame):
         
         # Exit the application when OK is clicked
         if retval == QMessageBox.StandardButton.Ok:
+            print(f"Uploading {len(value['editedFiles'])} files")
+            try:
+                self.gui.sharepoint.uploadFiles(value['editedFiles'])
+            finally:
+                self.gui.sharepoint.cleanUp()
             self.gui.app.quit()
 
     
@@ -129,7 +123,7 @@ class InputBox(QHBoxLayout):
         self.gui = gui
 
         labelWidget = QLabel(label)
-        labelWidget.setMinimumWidth(120)
+        labelWidget.setMinimumWidth(60)
         self.addWidget(labelWidget)
 
         inputBox = QLineEdit()

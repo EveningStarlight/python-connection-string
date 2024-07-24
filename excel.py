@@ -16,10 +16,10 @@ class Excel:
         return getattr(self, key)
 
     def edit(self, sql):
-        filesEdited=0
+        editedFiles = []
         filesNotFound=0
         for file in self.files:
-            fileName = file.split('/')[-1]
+            fileName = os.path.basename(file)
             connectionString = sql.getConnectionFromFileName(fileName)
             if connectionString is None:
                 print(f'No match for "{fileName}" in the SQL')
@@ -34,7 +34,7 @@ class Excel:
                 modified_contents = re.sub(Excel.connectionRegex, connectionString+' Model', file_contents)
 
             if file_contents != modified_contents:
-                filesEdited += 1
+                editedFiles.append(file)
                 with open(Excel.connectionPath, 'w') as f:
                     f.write(modified_contents)
 
@@ -47,7 +47,7 @@ class Excel:
 
             # Clean up
             shutil.rmtree(Excel.extractPath)
-        return {'filesEdited': filesEdited, 'totalFiles': len(self.files), 'filesNotFound': filesNotFound}
+        return {'editedFiles': editedFiles, 'files': self.files, 'filesNotFound': filesNotFound}
                 
 
     def getFiles(self, directory, files=None):
@@ -55,7 +55,7 @@ class Excel:
             files = []
 
         for name in os.listdir(directory):
-            f = '/'.join([directory, name])
+            f = os.path.join(directory, name)
             
             if os.path.isdir(f):
                 files = self.getFiles(f, files)
